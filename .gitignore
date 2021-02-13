@@ -1,7 +1,8 @@
 # Created by .ignore support plugin (hsz.mobi)
 ### Linux template
 *~
-
+./cmake-build-debug/
+./build/
 # KDE directory preferences
 .directory
 
