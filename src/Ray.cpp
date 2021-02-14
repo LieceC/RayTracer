@@ -1,13 +1,11 @@
-
-
 #include "../include/Ray.hh"
 
-IMAGE::Vec3 SCENE::Ray::getOrig() {
+RayTracer::Vec3 RayTracer::Ray::getOrig() {
     return orig;
 }
 
-IMAGE::Vec3 SCENE::Ray::getDir() {
+RayTracer::Vec3 RayTracer::Ray::getDir() {
     return dir;
 }
 
-SCENE::Ray::Ray(IMAGE::Vec3 orig, IMAGE::Vec3 dir) : dir(dir), orig(orig) {}
+RayTracer::Ray::Ray(RayTracer::Vec3 orig, RayTracer::Vec3 dir) : dir(dir), orig(orig) {}

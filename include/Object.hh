@@ -3,7 +3,7 @@
 #include "Ray.hh"
 #include "MaterialsParameters.h"
 
-namespace SCENE {
+namespace RayTracer {
     class Object {
     public:
         /**
@@ -13,10 +13,10 @@ namespace SCENE {
          * @return True if it has an intersection, false otherwise
          * */
         Object()= default;;
-        Object(const IMAGE::Vec3& color,MaterialsParameters materialSpec) : color(color),materialSpec(materialSpec){};
-        virtual bool intersect(Ray ray, IMAGE::Vec3 *point) const = 0;
+        Object(const RayTracer::Vec3& color, MaterialsParameters materialSpec) : color(color), materialSpec(materialSpec){};
+        virtual bool intersect(Ray ray, RayTracer::Vec3 *point) const = 0;
 
-        virtual IMAGE::Vec3 getNormal(IMAGE::Vec3 intersect_point) const = 0;
+        virtual RayTracer::Vec3 getNormal(RayTracer::Vec3 intersect_point) const = 0;
 
         /**
          * Get the materials specifications for this object
@@ -26,13 +26,13 @@ namespace SCENE {
             return this->materialSpec;
         }
 
-        IMAGE::Vec3 getColor() {
+        RayTracer::Vec3 getColor() {
             return this->color;
         }
 
     protected:
         //Does an object only have one color ??? HMMM
-        IMAGE::Vec3 color;
+        RayTracer::Vec3 color;
         MaterialsParameters materialSpec{};
     };
 }

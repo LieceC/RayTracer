@@ -2,7 +2,7 @@
 #include "Object.hh"
 #include "Vec3.hh"
 
-namespace SCENE {
+namespace RayTracer {
     class Sphere : public Object {
     public:
         /**
@@ -11,17 +11,17 @@ namespace SCENE {
          * @param radius
          * @param spec The
          */
-        Sphere(const IMAGE::Vec3& position,float radius,const IMAGE::Vec3& color_Vec,MaterialsParameters spec);
+        Sphere(const RayTracer::Vec3& position, float radius, const RayTracer::Vec3& color_Vec, MaterialsParameters spec);
         /**
          * Compute the intersection between an object with a ray
          * @param ray the ray coming from the camera ot the sphere
          * @param point Return the first point of intersection in [point]
          * @return True if it has an intersection, false otherwise
          */
-        bool intersect(Ray ray,IMAGE::Vec3 *point) const;
-        IMAGE::Vec3 getNormal(IMAGE::Vec3 intersect_point) const;
+        bool intersect(Ray ray, RayTracer::Vec3 *point) const;
+        RayTracer::Vec3 getNormal(RayTracer::Vec3 intersect_point) const;
     private:
-        IMAGE::Vec3 position;
+        RayTracer::Vec3 position;
         float radius;
     };
 }

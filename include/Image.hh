@@ -3,7 +3,7 @@
 #include "Vec3.hh"
 #define MAX_PIXEL_VALUE 255
 
-namespace IMAGE {
+namespace RayTracer {
     /**
      * An image is described by its resolution [width*height] and its value on each [pixels]
      */
@@ -35,7 +35,7 @@ namespace IMAGE {
          * @param valueGreen The green shade of the pixel
          * @param valueBlue The blue shade of the pixel
          */
-        void setPixel(int row, int col, const IMAGE::Vec3& color);
+        void setPixel(int row, int col, const RayTracer::Vec3& color);
         /**
          * Save the image in the basic plain ppm format in the folder filepath relative to where
          * the executable is found. You can pass an absolute path.

@@ -1,8 +1,8 @@
-#include <cmath>
 #include "../include/Vec3.hh"
 #include "../include/utils.h"
+#include <cmath>
 
-float fresnel_coefficient(IMAGE::Vec3 l_v, IMAGE::Vec3 n_v, float refract_ind) {
+float fresnel_coefficient(RayTracer::Vec3 l_v, RayTracer::Vec3 n_v, float refract_ind) {
     float eta_2 = std::pow(refract_ind, 2);
     float cos_theta = l_v.dot(n_v);
     float sin_2 = 1 - std::pow(cos_theta, 2);

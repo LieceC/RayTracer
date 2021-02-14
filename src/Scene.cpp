@@ -1,19 +1,17 @@
-#include <utility>
-
 #include "../include/Scene.hh"
 #include "../include/utils.h"
 
 
 //TODO Only keep closest object intersect on a point
 void Scene::render(int image_width, int image_height, int needed_bounce) {
-    IMAGE::Image img(image_width, image_height);
+    RayTracer::Image img(image_width, image_height);
     for (int row = 0; row < image_height; row++) {
         for (int col = 0; col < image_width; col++) {
-            SCENE::Ray r = this->camera.pixelToRay(row, col, image_width, image_height);
-            IMAGE::Vec3 color;
+            RayTracer::Ray r = this->camera.pixelToRay(row, col, image_width, image_height);
+            RayTracer::Vec3 color;
             bool hasIntersect = false;
             for (const auto &v : objects) {
-                IMAGE::Vec3 point;
+                RayTracer::Vec3 point;
                 if (v->intersect(r, &point)) {
                     hasIntersect = true;
                     color = color + computeLightningAndShadows(v, point, needed_bounce);
@@ -27,24 +25,24 @@ void Scene::render(int image_width, int image_height, int needed_bounce) {
     img.save("test.ppm");
 }
 
-IMAGE::Vec3 Scene::computeLightningAndShadows(SCENE::Object *object,
-                                              IMAGE::Vec3 intersect_point, int bounce_remaining) {
+RayTracer::Vec3 Scene::computeLightningAndShadows(RayTracer::Object *object,
+                                                  RayTracer::Vec3 intersect_point, int bounce_remaining) {
     //total color
-    IMAGE::Vec3 colorT(0,0,0);
+    RayTracer::Vec3 colorT(0, 0, 0);
     // Ambient color
-    IMAGE::Vec3 colorA = object->getColor() * ambiantStrengthScene * object->getParam().ka;
+    RayTracer::Vec3 colorA = object->getColor() * ambiantStrengthScene * object->getParam().ka;
     // Diffuse color
-    IMAGE::Vec3 colorD(0,0,0);
+    RayTracer::Vec3 colorD(0, 0, 0);
     // Specular color
-    IMAGE::Vec3 colorS(0,0,0);
-    IMAGE::Vec3 normal_vector = object->getNormal(intersect_point);
-    IMAGE::Vec3 camera_vector = (camera.getPos() - intersect_point);
+    RayTracer::Vec3 colorS(0, 0, 0);
+    RayTracer::Vec3 normal_vector = object->getNormal(intersect_point);
+    RayTracer::Vec3 camera_vector = (camera.getPos() - intersect_point);
     camera_vector = camera_vector / camera_vector.norm();
     for (const auto &v : light_sources) {
         bool inShadows = false;
-        IMAGE::Vec3 vec_to_light = (v->getPosition() - intersect_point);
+        RayTracer::Vec3 vec_to_light = (v->getPosition() - intersect_point);
         vec_to_light = vec_to_light / vec_to_light.norm();
-        SCENE::Ray r(intersect_point, vec_to_light);
+        RayTracer::Ray r(intersect_point, vec_to_light);
         for (const auto &v2 : this->objects) {
             if (v2 != object && v2->intersect(r, nullptr)) {
                 inShadows = true;
@@ -52,14 +50,14 @@ IMAGE::Vec3 Scene::computeLightningAndShadows(SCENE::Object *object,
             }
         }
         if (not inShadows) {
-            IMAGE::Vec3 light_dir = v->atVector(intersect_point);
+            RayTracer::Vec3 light_dir = v->atVector(intersect_point);
             light_dir = light_dir / light_dir.norm();
-            IMAGE::Vec3 half_vector = (light_dir + camera_vector) / (light_dir + camera_vector).norm();
+            RayTracer::Vec3 half_vector = (light_dir + camera_vector) / (light_dir + camera_vector).norm();
             float fresnelCoefficient = fresnel_coefficient(light_dir, normal_vector, object->getParam().refract_ind);
             if (bounce_remaining > 0) {
-                IMAGE::Vec3 reflected_ray_vec = light_dir - normal_vector * 2 * normal_vector.dot(light_dir);
-                SCENE::Ray r_ref(intersect_point, reflected_ray_vec);
-                IMAGE::Vec3 point;
+                RayTracer::Vec3 reflected_ray_vec = light_dir - normal_vector * 2 * normal_vector.dot(light_dir);
+                RayTracer::Ray r_ref(intersect_point, reflected_ray_vec);
+                RayTracer::Vec3 point;
                 //TODO Only take into account the nearest Intersection
                 for (const auto &o : objects) {
                     if (o->intersect(r_ref, &point)) {
@@ -81,21 +79,21 @@ IMAGE::Vec3 Scene::computeLightningAndShadows(SCENE::Object *object,
     return {std::min(colorT[0], 255.0f), std::min(colorT[1], 255.0f), std::min(colorT[2], 255.0f)};
 }
 
-Scene::Scene(SCENE::Camera
-camera, SCENE::Object *object) : camera(std::move(camera)) {
+Scene::Scene(RayTracer::Camera
+camera, RayTracer::Object *object) : camera(std::move(camera)) {
     this->addObject(object);
 }
 
-Scene::Scene(SCENE::Camera
-camera, SCENE::Object *object, IMAGE::Vec3
+Scene::Scene(RayTracer::Camera
+camera, RayTracer::Object *object, RayTracer::Vec3
              background_color) : camera(std::move(camera)), background_color(background_color) {
     this->addObject(object);
 }
 
-Scene::Scene(SCENE::Camera
+Scene::Scene(RayTracer::Camera
 camera) : camera(std::move(camera)) {}
 
-void Scene::addObject(SCENE::Object *object) {
+void Scene::addObject(RayTracer::Object *object) {
     this->objects.push_back(object);
 }
 
@@ -116,7 +114,7 @@ void Scene::clearScene() {
     this->clearObjects();
 }
 
-void Scene::addLightSource(LIGHTING::Light *light_source) {
+void Scene::addLightSource(RayTracer::Light *light_source) {
     this->light_sources.push_back(light_source);
 }
 

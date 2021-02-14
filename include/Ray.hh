@@ -1,14 +1,14 @@
 #pragma once
 #include "Vec3.hh"
 
-namespace SCENE {
+namespace RayTracer {
     class Ray {
     public:
-        Ray(IMAGE::Vec3 orig, IMAGE::Vec3 dir);
-        IMAGE::Vec3 getOrig();
-        IMAGE::Vec3 getDir();
+        Ray(RayTracer::Vec3 orig, RayTracer::Vec3 dir);
+        RayTracer::Vec3 getOrig();
+        RayTracer::Vec3 getDir();
     private:
-        IMAGE::Vec3 orig;
-        IMAGE::Vec3 dir;
+        RayTracer::Vec3 orig;
+        RayTracer::Vec3 dir;
     };
 }

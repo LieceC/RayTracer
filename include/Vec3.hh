@@ -1,7 +1,7 @@
 #pragma once
 #include <iostream>
 
-namespace IMAGE{
+namespace RayTracer{
     class Vec3 {
 		public:
 		Vec3();
@@ -25,7 +25,7 @@ namespace IMAGE{
 		float x,y,z;
     };
 }
-std::ostream& operator<< (std::ostream &out, const IMAGE::Vec3& v);
+std::ostream& operator<< (std::ostream &out, const RayTracer::Vec3& v);
 
 
 

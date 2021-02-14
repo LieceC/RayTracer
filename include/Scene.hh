@@ -7,25 +7,25 @@
 
 class Scene {
 public:
-    Scene(SCENE::Camera  camera,SCENE::Object *object, IMAGE::Vec3 background_color);
-    Scene(SCENE::Camera  camera,SCENE::Object *object);
-    Scene(SCENE::Camera  camera);
+    Scene(RayTracer::Camera  camera, RayTracer::Object *object, RayTracer::Vec3 background_color);
+    Scene(RayTracer::Camera  camera, RayTracer::Object *object);
+    Scene(RayTracer::Camera  camera);
     void render(int image_width, int image_height, int needed_bounce = 0);
-    IMAGE::Vec3 computeLightningAndShadows(SCENE::Object *object,IMAGE::Vec3 intersect_point,int bounce_remaining = 0);
-    void addObject(SCENE::Object *object);
+    RayTracer::Vec3 computeLightningAndShadows(RayTracer::Object *object, RayTracer::Vec3 intersect_point, int bounce_remaining = 0);
+    void addObject(RayTracer::Object *object);
     void removeLastObject();
     void removeObject(int index);
-    void addLightSource(LIGHTING::Light *light_source);
+    void addLightSource(RayTracer::Light *light_source);
     void removeLightSource(int index);
     void clearLightSources();
     void clearScene();
 private:
-    SCENE::Camera camera;
-    std::vector<SCENE::Object*> objects;
-    std::vector<LIGHTING::Light*> light_sources;
+    RayTracer::Camera camera;
+    std::vector<RayTracer::Object*> objects;
+    std::vector<RayTracer::Light*> light_sources;
     //For now, we'll suppose that this is a constant.
     float ambiantStrengthScene = 0.1;
-    IMAGE::Vec3 background_color = {0,0,0};
+    RayTracer::Vec3 background_color = {0, 0, 0};
 
     void clearObjects();
 };

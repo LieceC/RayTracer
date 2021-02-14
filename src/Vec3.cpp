@@ -2,11 +2,11 @@
 #include <cmath>
 #include <iostream>
 
-using namespace IMAGE;
+using namespace RayTracer;
 
-IMAGE::Vec3::Vec3() : x(0.0f), y(0.0f), z(0.0f) {}
+RayTracer::Vec3::Vec3() : x(0.0f), y(0.0f), z(0.0f) {}
 
-IMAGE::Vec3::Vec3(float x, float y, float z) : x(x), y(y), z(z) {}
+RayTracer::Vec3::Vec3(float x, float y, float z) : x(x), y(y), z(z) {}
 
 float Vec3::operator[](int index) const {
     switch (index) {
@@ -21,7 +21,7 @@ float Vec3::operator[](int index) const {
     }
 }
 
-IMAGE::Vec3 IMAGE::Vec3::operator*(const float &l) const {
+RayTracer::Vec3 RayTracer::Vec3::operator*(const float &l) const {
     return {this->x * l, this->y * l, this->z * l};
 }
 
@@ -29,7 +29,7 @@ Vec3 Vec3::operator*(const Vec3 &v) const {
     return {this->x * v.x, this->y * v.y, this->z * v.z};
 }
 
-IMAGE::Vec3 IMAGE::Vec3::operator-(const IMAGE::Vec3 &v) const {
+RayTracer::Vec3 RayTracer::Vec3::operator-(const RayTracer::Vec3 &v) const {
     return {this->x - v.x, this->y - v.y, this->z - v.z};
 }
 
@@ -63,7 +63,7 @@ float Vec3::norm() const {
                      z * z);
 }
 
-IMAGE::Vec3 Vec3::cross(const Vec3 &v) const {
+RayTracer::Vec3 Vec3::cross(const Vec3 &v) const {
     float x_cross = y * v.z - z * v.y;
     float y_cross = z * v.x - x * v.z;
     float z_cross = x * v.y - y * v.x;

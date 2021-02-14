@@ -1,19 +1,17 @@
-
-
 #include "../include/Light.hh"
 
-IMAGE::Vec3 LIGHTING::Light::atVector(IMAGE::Vec3 point) {
+RayTracer::Vec3 RayTracer::Light::atVector(RayTracer::Vec3 point) {
     return this->position - point;
 }
 
-float LIGHTING::Light::getIntensity() const {
+float RayTracer::Light::getIntensity() const {
     return intensity;
 }
 
-IMAGE::Vec3 LIGHTING::Light::getRBGColor() const {
+RayTracer::Vec3 RayTracer::Light::getRBGColor() const {
     return RGB_color;
 }
 
-IMAGE::Vec3 LIGHTING::Light::getPosition() const {
+RayTracer::Vec3 RayTracer::Light::getPosition() const {
     return position;
 }
