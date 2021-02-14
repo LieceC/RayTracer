@@ -17,12 +17,7 @@ bool SCENE::Sphere::intersect(SCENE::Ray ray,IMAGE::Vec3 *point) const {
 }
 
 
-SCENE::Sphere::Sphere(IMAGE::Vec3 position, float radius,IMAGE::Vec3 color_Vec,MaterialsParameters spec) {
-    this->position = position;
-    this->radius = radius;
-    this->materialSpec = spec;
-    this->color = color_Vec;
-}
+SCENE::Sphere::Sphere(const IMAGE::Vec3& position, float radius,const IMAGE::Vec3& color_Vec,MaterialsParameters spec) : position(position),radius(radius),Object(color_Vec,spec) {}
 
 IMAGE::Vec3 SCENE::Sphere::getNormal(IMAGE::Vec3 intersect_point) const {
     return (intersect_point - this->position)/this->radius;

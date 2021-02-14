@@ -11,7 +11,7 @@ namespace SCENE {
          * @param radius
          * @param spec The
          */
-        Sphere(IMAGE::Vec3 position,float radius,IMAGE::Vec3 color_Vec,MaterialsParameters spec);
+        Sphere(const IMAGE::Vec3& position,float radius,const IMAGE::Vec3& color_Vec,MaterialsParameters spec);
         /**
          * Compute the intersection between an object with a ray
          * @param ray the ray coming from the camera ot the sphere

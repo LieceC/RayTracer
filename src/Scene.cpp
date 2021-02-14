@@ -4,18 +4,17 @@
 
 //TODO
 void Scene::render(int image_width, int image_height, int needed_bounce) {
-    IMAGE::Image img = IMAGE::Image(image_width, image_height);
+    IMAGE::Image img(image_width, image_height);
     for (int row = 0; row < image_height; row++) {
         for (int col = 0; col < image_width; col++) {
             SCENE::Ray r = this->camera.pixelToRay(row, col, image_width, image_height);
             for (const auto &v : objects) {
                 IMAGE::Vec3 point;
                 if (v->intersect(r, &point)) {
-                   // IMAGE::Vec3 color = computeLightningAndShadows(v, point,needed_bounce);
-                    IMAGE::Vec3 color = v->getColor();
-                    img.setPixel(row, col, color[0], color[1], color[2]);
+                    IMAGE::Vec3 color = computeLightningAndShadows(v, point, needed_bounce);
+                    img.setPixel(row, col, color);
                 } else {
-                    img.setPixel(row, col, background_color[0], background_color[1], background_color[2]);
+                    img.setPixel(row, col, background_color);
                 }
             }
         }
@@ -26,13 +25,13 @@ void Scene::render(int image_width, int image_height, int needed_bounce) {
 IMAGE::Vec3 Scene::computeLightningAndShadows(SCENE::Object *object,
                                               IMAGE::Vec3 intersect_point, int bounce_remaining) {
     //total color
-    IMAGE::Vec3 colorT = new IMAGE::Vec3();
+    IMAGE::Vec3 colorT(0,0,0);
     // Ambient color
-    IMAGE::Vec3 colorA = object->getColor()* ambiantStrength * object->getParam().ka;
+    IMAGE::Vec3 colorA = object->getColor() * ambiantStrengthScene * object->getParam().ka;
     // Diffuse color
-    IMAGE::Vec3 colorD = new IMAGE::Vec3(0, 0, 0);
+    IMAGE::Vec3 colorD(0,0,0);
     // Specular color
-    IMAGE::Vec3 colorS = new IMAGE::Vec3(0, 0, 0);
+    IMAGE::Vec3 colorS(0,0,0);
     IMAGE::Vec3 normal_vector = object->getNormal(intersect_point);
     IMAGE::Vec3 camera_vector = (camera.getPos() - intersect_point);
     camera_vector = camera_vector / camera_vector.norm();
@@ -41,7 +40,7 @@ IMAGE::Vec3 Scene::computeLightningAndShadows(SCENE::Object *object,
         IMAGE::Vec3 vec_to_light = (v->getPosition() - intersect_point);
         vec_to_light = vec_to_light / vec_to_light.norm();
         SCENE::Ray r(intersect_point, vec_to_light);
-        for (const auto *v2 : this->objects) {
+        for (const auto &v2 : this->objects) {
             if (v2 != object && v2->intersect(r, nullptr)) {
                 inShadows = true;
                 break;
@@ -63,9 +62,11 @@ IMAGE::Vec3 Scene::computeLightningAndShadows(SCENE::Object *object,
                     }
                 }
             }
+            //TODO Is it find
+            //colorA = object->getColor() * object->getParam().ka * v->getIntensity() * v->getRBGColor();
             colorD = colorD + (object->getColor() * object->getParam().kd *
                                std::max(0.0f, normal_vector.dot(light_dir)) * v->getIntensity() *
-                    v->getRBGColor());
+                               v->getRBGColor());
 
             float temp = std::pow(std::max(0.0f, normal_vector.dot(half_vector)), object->getParam().shininess);
             colorS = colorS + (object->getColor() * v->getIntensity() * fCoeff * temp * v->getRBGColor());
@@ -74,22 +75,23 @@ IMAGE::Vec3 Scene::computeLightningAndShadows(SCENE::Object *object,
     colorT = colorA + colorD + colorS;
     return {std::min(colorT[0], 255.0f), std::min(colorT[1], 255.0f), std::min(colorT[2], 255.0f)};
 }
-Scene::Scene(const SCENE::Camera&
-             camera, SCENE::Object *object) {
+
+Scene::Scene(const SCENE::Camera &
+camera, SCENE::Object *object) {
     this->camera = camera;
     this->addObject(object);
 }
 
-Scene::Scene(const SCENE::Camera&
-             camera, SCENE::Object *object, IMAGE::Vec3
+Scene::Scene(const SCENE::Camera &
+camera, SCENE::Object *object, IMAGE::Vec3
              background_color) {
     this->camera = camera;
     this->addObject(object);
     this->background_color = background_color;
 }
 
-Scene::Scene(const SCENE::Camera&
-             camera) {
+Scene::Scene(const SCENE::Camera &
+camera) {
     this->camera = camera;
 }
 
@@ -102,12 +104,13 @@ void Scene::removeLastObject() {
 }
 
 void Scene::removeObject(int index) {
-    this->objects.erase(this->objects.begin()+index);
+    this->objects.erase(this->objects.begin() + index);
 }
 
 void Scene::clearObjects() {
     this->objects.clear();
 }
+
 void Scene::clearScene() {
     this->clearLightSources();
     this->clearObjects();
@@ -118,7 +121,7 @@ void Scene::addLightSource(LIGHTING::Light *light_source) {
 }
 
 void Scene::removeLightSource(int index) {
-    this->light_sources.erase(this->light_sources.begin()+index);
+    this->light_sources.erase(this->light_sources.begin() + index);
 }
 
 void Scene::clearLightSources() {

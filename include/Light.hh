@@ -21,7 +21,7 @@ namespace LIGHTING {
          * @param position  The position of the light in the scene coordinates
          * @param intensity The intensity of the light
          */
-        Light(IMAGE::Vec3 RGB_Color, IMAGE::Vec3 position, float intensity);
+        Light(IMAGE::Vec3 RGB_Color, IMAGE::Vec3 position, float intensity) : RGB_color(RGB_Color),position(position),intensity(intensity){};
         /**
          * Create the vector coming from the 3D point [point] to the light direction
          * @param point A 3D point in the scene coordinate

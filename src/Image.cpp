@@ -38,6 +38,6 @@ bool IMAGE::Image::save(const char *filepath) {
 
 }
 
-void IMAGE::Image:: setPixel(int row, int col, int valueRed, int valueGreen,int valueBlue) {
-    this->pixels[row][col] = new IMAGE::Vec3(valueRed,valueGreen,valueBlue);
+void IMAGE::Image::setPixel(int row, int col, const IMAGE::Vec3& color) {
+    this->pixels[row][col] = color;
 }

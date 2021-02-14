@@ -24,7 +24,7 @@ private:
     std::vector<SCENE::Object*> objects;
     std::vector<LIGHTING::Light*> light_sources;
     //For now, we'll suppose that this is a constant.
-    float ambiantStrength = 0.1;
+    float ambiantStrengthScene = 0.1;
     IMAGE::Vec3 background_color = {0,0,0};
 
     void clearObjects();
