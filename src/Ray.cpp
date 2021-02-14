@@ -2,11 +2,11 @@
 
 #include "../include/Ray.hh"
 
-const IMAGE::Vec3 &SCENE::Ray::getOrig() const {
+IMAGE::Vec3 SCENE::Ray::getOrig() {
     return orig;
 }
 
-const IMAGE::Vec3 &SCENE::Ray::getDir() const {
+IMAGE::Vec3 SCENE::Ray::getDir() {
     return dir;
 }
 

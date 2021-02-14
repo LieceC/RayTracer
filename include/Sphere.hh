@@ -5,8 +5,20 @@
 namespace SCENE {
     class Sphere : public Object {
     public:
-        Sphere(const IMAGE::Vec3& position,float radius,MaterialsParameters *spec);
-        bool intersect(const Ray &ray,IMAGE::Vec3 *point) const;
+        /**
+         * Create a sphere object consisting of a [position] and a [radius] of a specific material [spec]
+         * @param position
+         * @param radius
+         * @param spec The
+         */
+        Sphere(IMAGE::Vec3 position,float radius,IMAGE::Vec3 color_Vec,MaterialsParameters spec);
+        /**
+         * Compute the intersection between an object with a ray
+         * @param ray the ray coming from the camera ot the sphere
+         * @param point Return the first point of intersection in [point]
+         * @return True if it has an intersection, false otherwise
+         */
+        bool intersect(Ray ray,IMAGE::Vec3 *point) const;
         IMAGE::Vec3 getNormal(IMAGE::Vec3 intersect_point) const;
     private:
         IMAGE::Vec3 position;

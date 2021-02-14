@@ -5,8 +5,8 @@ namespace SCENE {
     class Ray {
     public:
         Ray(IMAGE::Vec3 orig, IMAGE::Vec3 dir);
-        const IMAGE::Vec3 &getOrig() const;
-        const IMAGE::Vec3 &getDir() const;
+        IMAGE::Vec3 getOrig();
+        IMAGE::Vec3 getDir();
     private:
         IMAGE::Vec3 orig;
         IMAGE::Vec3 dir;

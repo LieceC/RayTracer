@@ -1,9 +1,19 @@
 #pragma once
-
 struct MaterialsParameters {
-    float kd{}; //between 0 and 1
-    float ka{};
-    float refract_ind{};
-    float shininess{};
-    IMAGE::Vec3 color{}; //Color vector of the object;
+    /**
+     * Diffuse coefficient between 0 and 1
+     */
+    float kd;
+    /**
+     * Ambient coefficient between 0 and 1
+     */
+    float ka;
+    /**
+     * Refraction coefficient 0 and 1
+     */
+    float refract_ind;
+    /**
+     * Shininess coefficient between 1 and inf
+     */
+    float shininess;
 };

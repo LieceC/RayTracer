@@ -1,9 +1,8 @@
 
 
 #include "../include/Sphere.hh"
-#include "../include/Vec3.hh"
 #include <cmath>
-bool SCENE::Sphere::intersect(const SCENE::Ray &ray,IMAGE::Vec3 *point) const {
+bool SCENE::Sphere::intersect(SCENE::Ray ray,IMAGE::Vec3 *point) const {
     IMAGE::Vec3 oc = ray.getOrig() - this->position;
     float a = ray.getDir().dot(ray.getDir());
     float b = 2.0f * oc.dot(ray.getDir());
@@ -18,10 +17,11 @@ bool SCENE::Sphere::intersect(const SCENE::Ray &ray,IMAGE::Vec3 *point) const {
 }
 
 
-SCENE::Sphere::Sphere(const IMAGE::Vec3& position, float radius,MaterialsParameters *spec) {
+SCENE::Sphere::Sphere(IMAGE::Vec3 position, float radius,IMAGE::Vec3 color_Vec,MaterialsParameters spec) {
     this->position = position;
     this->radius = radius;
     this->materialSpec = spec;
+    this->color = color_Vec;
 }
 
 IMAGE::Vec3 SCENE::Sphere::getNormal(IMAGE::Vec3 intersect_point) const {

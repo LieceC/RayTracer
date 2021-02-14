@@ -10,9 +10,9 @@ void Scene::render(int image_width, int image_height, int needed_bounce) {
             SCENE::Ray r = this->camera.pixelToRay(row, col, image_width, image_height);
             for (const auto &v : objects) {
                 IMAGE::Vec3 point;
-                //TODO Only take into account the nearest Intersection
                 if (v->intersect(r, &point)) {
-                    IMAGE::Vec3 color = computeLightningAndShadows(v, point,needed_bounce);
+                   // IMAGE::Vec3 color = computeLightningAndShadows(v, point,needed_bounce);
+                    IMAGE::Vec3 color = v->getColor();
                     img.setPixel(row, col, color[0], color[1], color[2]);
                 } else {
                     img.setPixel(row, col, background_color[0], background_color[1], background_color[2]);
@@ -24,11 +24,11 @@ void Scene::render(int image_width, int image_height, int needed_bounce) {
 }
 
 IMAGE::Vec3 Scene::computeLightningAndShadows(SCENE::Object *object,
-                                              const IMAGE::Vec3 &intersect_point, int bounce_remaining) {
+                                              IMAGE::Vec3 intersect_point, int bounce_remaining) {
     //total color
     IMAGE::Vec3 colorT = new IMAGE::Vec3();
     // Ambient color
-    IMAGE::Vec3 colorA = object->getParam().color * ambiantStrength * object->getParam().ka;
+    IMAGE::Vec3 colorA = object->getColor()* ambiantStrength * object->getParam().ka;
     // Diffuse color
     IMAGE::Vec3 colorD = new IMAGE::Vec3(0, 0, 0);
     // Specular color
@@ -63,12 +63,12 @@ IMAGE::Vec3 Scene::computeLightningAndShadows(SCENE::Object *object,
                     }
                 }
             }
-            colorD = colorD + (object->getParam().color * object->getParam().kd *
+            colorD = colorD + (object->getColor() * object->getParam().kd *
                                std::max(0.0f, normal_vector.dot(light_dir)) * v->getIntensity() *
-                               v->getRgbIntensity());
+                    v->getRBGColor());
 
             float temp = std::pow(std::max(0.0f, normal_vector.dot(half_vector)), object->getParam().shininess);
-            colorS = colorS + (object->getParam().color * v->getIntensity() * fCoeff * temp * v->getRgbIntensity());
+            colorS = colorS + (object->getColor() * v->getIntensity() * fCoeff * temp * v->getRBGColor());
         }
     }
     colorT = colorA + colorD + colorS;
@@ -81,7 +81,7 @@ Scene::Scene(const SCENE::Camera&
 }
 
 Scene::Scene(const SCENE::Camera&
-             camera, SCENE::Object *object, const IMAGE::Vec3&
+             camera, SCENE::Object *object, IMAGE::Vec3
              background_color) {
     this->camera = camera;
     this->addObject(object);

@@ -7,10 +7,13 @@ namespace IMAGE{
 		Vec3();
 		Vec3(float x,float y, float z);
         Vec3(const IMAGE::Vec3 &v);
-
         Vec3(Vec3 *pVec3);
-
         Vec3 operator*(const float &l) const;
+        /**
+         * Implement a point to point multiplication of vectors !!!!
+         * @param v
+         * @return the point to point multiplication in 2 vector
+         */
         Vec3 operator*(const Vec3 &v) const;
         Vec3 operator/(const float &l) const;
         Vec3 operator-(const Vec3 &v) const;

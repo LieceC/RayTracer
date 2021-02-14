@@ -17,23 +17,23 @@ namespace IMAGE {
         Image(int const width,int const height);
         /**
          * Copy constructor of Image
-         * @param img
+         * @param img The image we want to copy
          */
         Image(const Image& img);
         /**
          * Return the RGB value at row [row] and column [column] in the Image
-         * @param row
-         * @param col
-         * @return Vec3 (R,G,B)
+         * @param row The row of the pixel we want to get
+         * @param col The column of the pixel we want to get
+         * @return Vec3 (R,G,B) of this pixel
          */
         Vec3 getPixel(int row, int col);
         /**
-         * set the RGB value of the pixel at position [row,col] to the value [valueRed,valueGreen,valueBlue]
-         * @param row
-         * @param col
-         * @param valueRed
-         * @param valueGreen
-         * @param valueBlue
+         * Set the RGB value of the pixel at position [row,col] to the value [valueRed,valueGreen,valueBlue]
+         * @param row Row position of the pixel
+         * @param col Column position of the pixel
+         * @param valueRed The red shade of the pixel
+         * @param valueGreen The green shade of the pixel
+         * @param valueBlue The blue shade of the pixel
          */
         void setPixel(int row, int col, int valueRed, int valueGreen,int valueBlue);
         /**
@@ -42,7 +42,7 @@ namespace IMAGE {
          * @param filepath
          * @return True if the save has been successful, False otherwise
          */
-        bool save(const char* filepath); //TODO eror handling
+        bool save(const char* filepath); //TODO error handling
     private:
         int width;
         int height;
