@@ -17,7 +17,6 @@ namespace IMAGE{
         Vec3 operator-(const Vec3 &v) const;
         Vec3 operator+(const Vec3 &v) const;
         Vec3& operator=(const Vec3 &v);
-        float operator[](int index);
         float operator[](int index) const;
         float dot(const Vec3& v) const;
         Vec3 cross(const Vec3& v) const;

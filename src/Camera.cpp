@@ -1,6 +1,16 @@
-
-
 #include "../include/Camera.hh"
+
+SCENE::Camera::Camera(float focal, float sensor_size_x, float sensor_size_y, IMAGE::Vec3 pos, IMAGE::Vec3 target,
+                      IMAGE::Vec3 vertical_dir) : focal(focal), sensor_size_x(sensor_size_x),
+                                                  sensor_size_y(sensor_size_y), pos(pos), target(target),
+                                                  up(vertical_dir) {}
+
+IMAGE::Vec3 SCENE::Camera::getPos() const {
+    return pos;
+}
+
+SCENE::Camera::Camera() = default;
+
 
 SCENE::Ray SCENE::Camera::pixelToRay(int pixelX, int pixelY, int size_x, int size_y) const {
     float u = (static_cast<float>(pixelX) / static_cast<float>(size_x - 1)) * this->sensor_size_x -
@@ -21,14 +31,3 @@ SCENE::Ray SCENE::Camera::pixelToRay(int pixelX, int pixelY, int size_x, int siz
     IMAGE::Vec3 Ca = vecX + vecY + vecZ;
     return {this->getPos(), Ca};
 }
-
-SCENE::Camera::Camera(float focal, float sensor_size_x, float sensor_size_y, IMAGE::Vec3 pos, IMAGE::Vec3 target,
-                      IMAGE::Vec3 vertical_dir) : focal(focal), sensor_size_x(sensor_size_x),
-                                                  sensor_size_y(sensor_size_y), pos(pos), target(target),
-                                                  up(vertical_dir) {}
-
-IMAGE::Vec3 SCENE::Camera::getPos() const {
-    return pos;
-}
-
-SCENE::Camera::Camera() = default;

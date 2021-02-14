@@ -13,8 +13,8 @@ namespace LIGHTING {
          * Return the color of the light
          * @return Vec3 Describing the color of the light
          */
-        const IMAGE::Vec3 getRBGColor() const;
-        const IMAGE::Vec3 getPosition() const;
+        IMAGE::Vec3 getRBGColor() const;
+        IMAGE::Vec3 getPosition() const;
         /**
          * Create a light with the color [RGB_Color] at the position [position] with an intensity [intensity].
          * @param RGB_Color The Vec3 colors vector of the light.

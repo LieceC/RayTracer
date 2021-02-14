@@ -1,8 +1,10 @@
+#include <utility>
+
 #include "../include/Scene.hh"
 #include "../include/utils.h"
 
 
-//TODO
+//TODO Only keep closest object intersect on a point
 void Scene::render(int image_width, int image_height, int needed_bounce) {
     IMAGE::Image img(image_width, image_height);
     for (int row = 0; row < image_height; row++) {
@@ -53,7 +55,7 @@ IMAGE::Vec3 Scene::computeLightningAndShadows(SCENE::Object *object,
             IMAGE::Vec3 light_dir = v->atVector(intersect_point);
             light_dir = light_dir / light_dir.norm();
             IMAGE::Vec3 half_vector = (light_dir + camera_vector) / (light_dir + camera_vector).norm();
-            float fCoeff = fresnel_coefficient(light_dir, normal_vector, object->getParam().refract_ind);
+            float fresnelCoefficient = fresnel_coefficient(light_dir, normal_vector, object->getParam().refract_ind);
             if (bounce_remaining > 0) {
                 IMAGE::Vec3 reflected_ray_vec = light_dir - normal_vector * 2 * normal_vector.dot(light_dir);
                 SCENE::Ray r_ref(intersect_point, reflected_ray_vec);
@@ -61,42 +63,37 @@ IMAGE::Vec3 Scene::computeLightningAndShadows(SCENE::Object *object,
                 //TODO Only take into account the nearest Intersection
                 for (const auto &o : objects) {
                     if (o->intersect(r_ref, &point)) {
-                        colorT = colorT + computeLightningAndShadows(o, point, bounce_remaining - 1) * fCoeff;
+                        colorT = colorT + computeLightningAndShadows(o, point, bounce_remaining - 1) * fresnelCoefficient;
                     }
                 }
             }
-            //TODO Is it find
+            //TODO Should I multiply the ambient color for each object
             //colorA = object->getColor() * object->getParam().ka * v->getIntensity() * v->getRBGColor();
             colorD = colorD + (object->getColor() * object->getParam().kd *
                                std::max(0.0f, normal_vector.dot(light_dir)) * v->getIntensity() *
                                v->getRBGColor());
 
             float temp = std::pow(std::max(0.0f, normal_vector.dot(half_vector)), object->getParam().shininess);
-            colorS = colorS + (object->getColor() * v->getIntensity() * fCoeff * temp * v->getRBGColor());
+            colorS = colorS + (object->getColor() * v->getIntensity() * fresnelCoefficient * temp * v->getRBGColor());
         }
     }
     colorT = colorA + colorD + colorS;
     return {std::min(colorT[0], 255.0f), std::min(colorT[1], 255.0f), std::min(colorT[2], 255.0f)};
 }
 
-Scene::Scene(const SCENE::Camera &
-camera, SCENE::Object *object) {
-    this->camera = camera;
+Scene::Scene(SCENE::Camera
+camera, SCENE::Object *object) : camera(std::move(camera)) {
     this->addObject(object);
 }
 
-Scene::Scene(const SCENE::Camera &
+Scene::Scene(SCENE::Camera
 camera, SCENE::Object *object, IMAGE::Vec3
-             background_color) {
-    this->camera = camera;
+             background_color) : camera(std::move(camera)), background_color(background_color) {
     this->addObject(object);
-    this->background_color = background_color;
 }
 
-Scene::Scene(const SCENE::Camera &
-camera) {
-    this->camera = camera;
-}
+Scene::Scene(SCENE::Camera
+camera) : camera(std::move(camera)) {}
 
 void Scene::addObject(SCENE::Object *object) {
     this->objects.push_back(object);

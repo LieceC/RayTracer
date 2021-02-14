@@ -10,7 +10,7 @@ bool SCENE::Sphere::intersect(SCENE::Ray ray, IMAGE::Vec3 *point) const {
     float c = oc.dot(oc) - radius * radius;
     float discriminant = b * b - 4 * a * c;
     if (discriminant >= 0) {
-        if (point != NULL) {
+        if (point != nullptr) {
             float t = (-b - std::sqrt(discriminant)) / (2 * a);
             *point = ray.getOrig() + ray.getDir() * t;
         }
