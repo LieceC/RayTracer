@@ -82,7 +82,7 @@ Vec3 Vec3::operator*(const Vec3 &v) const {
 }
 
 Vec3& Vec3::operator=(const Vec3 &v) {
-    if(this== &v)
+    if(this == &v)
         return *this;
     this->x = v.x;
     this->y = v.y;

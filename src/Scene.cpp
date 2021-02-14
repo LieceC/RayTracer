@@ -8,15 +8,18 @@ void Scene::render(int image_width, int image_height, int needed_bounce) {
     for (int row = 0; row < image_height; row++) {
         for (int col = 0; col < image_width; col++) {
             SCENE::Ray r = this->camera.pixelToRay(row, col, image_width, image_height);
+            IMAGE::Vec3 color;
+            bool hasIntersect = false;
             for (const auto &v : objects) {
                 IMAGE::Vec3 point;
                 if (v->intersect(r, &point)) {
-                    IMAGE::Vec3 color = computeLightningAndShadows(v, point, needed_bounce);
-                    img.setPixel(row, col, color);
-                } else {
-                    img.setPixel(row, col, background_color);
+                    hasIntersect = true;
+                    color = color + computeLightningAndShadows(v, point, needed_bounce);
                 }
             }
+            if(!hasIntersect){
+                img.setPixel(row, col, background_color);
+            } else img.setPixel(row, col, color);
         }
     }
     img.save("test.ppm");
